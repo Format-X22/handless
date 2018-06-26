@@ -56,7 +56,7 @@ class Control {
     }
 
     _extractValue(obj) {
-        return +obj[Object.keys(obj)[0]]
+        return +obj[Object.keys(obj)[0]];
     }
 
     _checkText(text, value) {

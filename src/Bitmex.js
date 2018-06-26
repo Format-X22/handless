@@ -1,5 +1,4 @@
 class Bitmex {
-
     long(price, amount) {
         // TODO -
     }
