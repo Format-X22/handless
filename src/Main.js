@@ -1,15 +1,16 @@
 const Control = require('./Control');
+const Strategy = require('./Strategy');
 const logger = require('./Logger');
 
 class Main {
     async start() {
         logger.info('Настройка...');
 
-        const { type, current, step, amount } = await new Control().start();
+        const config = await new Control().start();
 
         logger.info('Запуск стратегии...');
 
-        // TODO -
+        await new Strategy(config).start();
     }
 }
 

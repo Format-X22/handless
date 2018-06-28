@@ -7,7 +7,7 @@ class Control {
             name: 'Тип позиции?',
             choices: ['Short', 'Long'],
         });
-        const type = typeRaw[Object.keys(typeRaw)[0]];
+        const type = this._extractValue(typeRaw).toLowerCase();
 
         const currentRaw = await inquirer.prompt({
             type: 'input',
