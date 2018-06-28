@@ -31,3 +31,5 @@ class Bitmex {
         // TODO -
     }
 }
+
+module.exports = Bitmex;

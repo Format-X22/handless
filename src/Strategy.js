@@ -60,3 +60,5 @@ class Strategy {
         // TODO -
     }
 }
+
+module.exports = Strategy;

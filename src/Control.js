@@ -2,36 +2,62 @@ const inquirer = require('inquirer');
 
 class Control {
     async start() {
+        const type = await this._getType();
+        const current = await this._getCurrent();
+        const after4Hours = await this._getAfter4Hours();
+        const amount = await this._getAmount();
+        const step = (after4Hours - current) / 49;
+        const confirm = await this._getConfirm(current, step, amount);
+
+        if (!confirm) {
+            console.log('Отмена!');
+            process.exit(0);
+        }
+
+        return { type, current, step, amount };
+    }
+
+    async _getType() {
         const typeRaw = await inquirer.prompt({
             type: 'list',
             name: 'Тип позиции?',
             choices: ['Short', 'Long'],
         });
-        const type = this._extractValue(typeRaw).toLowerCase();
 
+        return this._extractValue(typeRaw).toLowerCase();
+    }
+
+    async _getCurrent() {
         const currentRaw = await inquirer.prompt({
             type: 'input',
             name: 'Текущее значение входа?',
             validate: value => value.length > 0 && isFinite(+value),
         });
-        const current = +this._extractValue(currentRaw);
 
+        return +this._extractValue(currentRaw);
+    }
+
+    async _getAfter4Hours() {
         const after4HoursRaw = await inquirer.prompt({
             type: 'input',
             name: 'Значение входа через 4 часа?',
             validate: value => value.length > 0 && isFinite(+value),
         });
-        const after4Hours = +this._extractValue(after4HoursRaw);
 
+        return +this._extractValue(after4HoursRaw);
+    }
+
+    async _getAmount() {
         const amountRaw = await inquirer.prompt({
             type: 'input',
             name: 'Количество долларов?',
             validate: value => value.length > 0 && isFinite(+value),
         });
-        const amount = +this._extractValue(amountRaw);
 
-        const step = (after4Hours - current) / 49;
+        return +this._extractValue(amountRaw);
+    }
 
+    async _getConfirm(current, step, amount) {
         const after1Hour = current + step * 13;
         const after8Hour = current + step * 97;
         const after24Hour = current + step * 289;
@@ -45,18 +71,12 @@ class Control {
             type: 'confirm',
             name: 'Всё верно?',
         });
-        const confirm = this._extractValue(confirmRaw);
 
-        if (!confirm) {
-            console.log('Отмена!');
-            process.exit(0);
-        }
-
-        return { type, current, step, amount };
+        return this._extractValue(confirmRaw);
     }
 
     _extractValue(obj) {
-        return +obj[Object.keys(obj)[0]];
+        return obj[Object.keys(obj)[0]];
     }
 
     _checkText(text, value) {
