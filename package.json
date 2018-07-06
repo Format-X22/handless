@@ -15,8 +15,7 @@
   "author": "Format-X22",
   "license": "ISC",
   "dependencies": {
-    "colors": "^1.3.0",
-    "inquirer": "^6.0.0",
-    "moment": "^2.22.2"
+    "griboyedov": "git+https://github.com/GolosChain/griboyedov.git",
+    "inquirer": "^6.0.0"
   }
 }
