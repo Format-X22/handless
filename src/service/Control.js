@@ -1,6 +1,8 @@
 const inquirer = require('inquirer');
+const core = require('griboyedov');
+const BasicService = core.service.Basic;
 
-class Control {
+class Control extends BasicService {
     async start() {
         const type = await this._getType();
         const current = await this._getCurrent();
@@ -13,6 +15,8 @@ class Control {
             console.log('Отмена!');
             process.exit(0);
         }
+
+        this.done();
 
         return { type, current, step, amount };
     }
