@@ -20,7 +20,7 @@ class Test {
             current *= 1.01;
 
             if (current > 25000) {
-                break
+                break;
             }
         }
     }

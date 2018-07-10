@@ -65,7 +65,10 @@ class Loader {
             this._to = this._nextChunk();
         }
 
-        fs.writeFileSync(`${__dirname}/${STORAGE}`, JSON.stringify(this._resultHash));
+        fs.writeFileSync(
+            `${__dirname}/${STORAGE}`,
+            JSON.stringify(this._resultHash)
+        );
     }
 
     _nextChunk() {
