@@ -1,4 +1,7 @@
 const fs = require('fs');
+const moment = require('moment');
+const LinkedList = require('linked-list');
+const LinkedItem = require('../LinkedItem');
 
 class Test {
     run() {
@@ -13,10 +16,10 @@ class Test {
     _makeZones() {
         let current = 1000;
 
-        this._zones = [];
+        this._zones = new LinkedList();
 
         while (true) {
-            this._zones.push(current);
+            this._zones.append(new LinkedItem(Math.round(current)));
             current *= 1.01;
 
             if (current > 25000) {
@@ -26,43 +29,49 @@ class Test {
     }
 
     _loop(data) {
-        let up, down;
+        let edge;
 
         this._state = 'init';
 
         for (let tick of Object.values(data)) {
-            const [date, open, high, low, close] = tick;
-
-            if (!up) {
-                [up, down] = this._findZone(close);
+            if (moment().subtract(10, 'days') > moment(tick[0] * 1000)) { // TODO
+                continue;
             }
 
-            this._iteration(date, open, high, low, close, up, down);
+            if (!edge) {
+                edge = this._findZone(tick[4]);
+            }
+
+            this._iteration(tick, edge);
         }
     }
 
     _findZone(value) {
-        let last = 0;
+        let edge = this._zones.head;
 
-        for (let edge of this._zones) {
-            if (edge > value) {
-                return [last, edge];
+        while (true) {
+            if (edge.value > value) {
+                return edge;
             }
 
-            last = edge;
+            edge = edge.next;
         }
     }
 
-    _iteration(date, open, high, low, close, up, down) {
+    _iteration([date, open, high, low, close], edge) {
         switch (this._state) {
             case 'init':
-                //
+                if (close > edge.value) {
+                    this._state = 'long';
+                } else if (close < edge.value) {
+                    this._state = 'short';
+                }
                 break;
             case 'long':
-                //
+                console.log('long');
                 break;
             case 'short':
-                //
+                console.log('short');
                 break;
         }
     }
