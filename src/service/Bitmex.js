@@ -1,9 +1,10 @@
-const core = require('griboyedov');
-const logger = core.Logger;
-const BasicService = core.service.Basic;
+const fs = require('fs');
 const request = require('request-promise-native');
 const moment = require('moment');
 const sleep = require('then-sleep');
+const core = require('griboyedov');
+const logger = core.Logger;
+const BasicService = core.service.Basic;
 
 const MAX_REQUEST_ERRORS = 750;
 const CANDLES_RETRY_TIME = 5000;
@@ -13,6 +14,13 @@ class Bitmex extends BasicService {
         super();
 
         this._requestErrors = 0;
+        const [publicKey, privateKey] = fs
+            .readFileSync('keys.txt')
+            .toString()
+            .split(/\r?\n/);
+
+        this._publicKey = publicKey;
+        this._privateKey = privateKey;
     }
 
     async start() {
