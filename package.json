@@ -1,26 +1,27 @@
 {
-  "name": "handless",
-  "version": "0.0.1",
-  "description": "",
-  "main": "./src/Main.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "prettier": {
-    "singleQuote": true,
-    "tabWidth": 4,
-    "semi": true,
-    "trailingComma": "es5"
-  },
-  "author": "Format-X22",
-  "license": "ISC",
-  "dependencies": {
-    "griboyedov": "git+https://github.com/GolosChain/griboyedov.git",
-    "inquirer": "^6.0.0",
-    "linked-list": "^1.0.4",
-    "moment": "^2.22.2",
-    "request": "^2.87.0",
-    "request-promise-native": "^1.0.5",
-    "then-sleep": "^1.0.1"
-  }
+    "name": "handless",
+    "version": "0.0.1",
+    "description": "",
+    "main": "./src/Main.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "prettier": {
+        "singleQuote": true,
+        "tabWidth": 4,
+        "semi": true,
+        "trailingComma": "es5",
+        "printWidth": 100
+    },
+    "author": "Format-X22",
+    "license": "ISC",
+    "dependencies": {
+        "griboyedov": "git+https://github.com/GolosChain/griboyedov.git",
+        "inquirer": "^6.0.0",
+        "linked-list": "^1.0.4",
+        "moment": "^2.22.2",
+        "request": "^2.87.0",
+        "request-promise-native": "^1.0.5",
+        "then-sleep": "^1.0.1"
+    }
 }
