@@ -39,6 +39,10 @@ class Bitmex extends BasicService {
         // TODO -
     }
 
+    async getBalance() {
+        //
+    }
+
     async getCandles() {
         let response;
         let result;

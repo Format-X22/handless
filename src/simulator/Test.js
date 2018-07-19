@@ -3,7 +3,7 @@ const moment = require('moment');
 const LinkedList = require('linked-list');
 const LinkedItem = require('../LinkedItem');
 
-const FROM = moment('2018-07-01T12:01:00.000');
+const FROM = moment('2018-07-05T00:00:00.000');
 
 class Test {
     run() {
@@ -24,6 +24,10 @@ class Test {
             this._zones.append(new LinkedItem(Math.round(current)));
             current *= 1.01;
 
+            if (current > 5500 && current < 10100) {
+                console.log(Math.round(current));
+            }
+
             if (current > 25000) {
                 break;
             }
@@ -31,8 +35,6 @@ class Test {
     }
 
     _loop(data) {
-        let edge;
-
         this._state = 'init';
 
         for (let tick of Object.values(data)) {
@@ -40,13 +42,13 @@ class Test {
                 continue;
             }
 
-            if (!edge) {
-                edge = this._findZone(tick[4]);
-                this._up = edge.value;
-                this._down = edge.prev.value;
+            if (!this._edge) {
+                this._edge = this._findZone(tick[4]);
+                this._up = this._edge.value;
+                this._down = this._edge.prev.value;
             }
 
-            this._iteration(tick, edge);
+            this._iteration(tick);
         }
     }
 
@@ -62,34 +64,59 @@ class Test {
         }
     }
 
-    _iteration([date, open, high, low, close], edge) {
+    _iteration([date, open, high, low, close]) {
         switch (this._state) {
             case 'init':
-                if (close > edge.value) {
+                if (close > this._edge.value) {
                     this._state = 'long';
-                    this._logMoment(date, close, edge);
-                } else if (close < edge.value) {
+                    this._logMoment(date, close);
+                } else if (close < this._edge.value) {
                     this._state = 'short';
-                    this._logMoment(date, close, edge);
+                    this._logMoment(date, close);
                 }
                 break;
+
             case 'long':
-                //console.log('long'); TODO
+                while (true) {
+                    if (close >= this._edge.value) {
+                        this._edge = this._edge.next;
+                        this._logMoment(date, close);
+                    } else if (close <= this._edge.prev.prev.value) {
+                        this._state = 'short';
+                        this._edge = this._edge.prev.prev;
+                        this._logMoment(date, close);
+                    } else {
+                        break;
+                    }
+                }
                 break;
+
             case 'short':
-                //console.log('short'); TODO
+                while (true) {
+                    if (close < this._edge.prev.value) {
+                        this._edge = this._edge.prev;
+                        this._logMoment(date, close);
+                    } else if (close >= this._edge.next.value) {
+                        this._state = 'long';
+                        this._edge = this._edge.next;
+                        this._logMoment(date, close);
+                    } else {
+                        break;
+                    }
+                }
                 break;
         }
     }
 
-    _logMoment(date, close, edge) {
+    _logMoment(date, close) {
         const now = moment(date * 1000).format('DD/MM HH:mm');
         const closed = close.toFixed(1);
-        const value = edge.value;
-        const zone = edge.value - edge.prev.value;
+        const up = this._edge.value;
+        const down = this._edge.prev.value;
+        const zone = this._edge.value - this._edge.prev.value;
 
         console.log(
-            `${this._state} - ${now} (${closed} :: ${value} :: ${zone})`
+            `${this._state} - ${now} (${closed} :: ${up} :: ${down} :: ${zone})`
         );
     }
 }
