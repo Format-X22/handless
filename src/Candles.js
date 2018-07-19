@@ -4,8 +4,8 @@ const sleep = require('then-sleep');
 const core = require('griboyedov');
 const logger = core.Logger;
 
-const MAX_REQUEST_ERRORS = 750;
-const CANDLES_RETRY_TIME = 5000;
+const MAX_ERRORS = 750;
+const RETRY_TIME = 5000;
 
 class Candles {
     constructor() {
@@ -26,12 +26,12 @@ class Candles {
             result = this._convertCandlesToObject(response);
         } catch (err) {
             logger.error(`Fail to load candles, sleep and retry... ${err}`);
-            await sleep(CANDLES_RETRY_TIME);
+            await sleep(RETRY_TIME);
 
             this._requestErrors++;
 
-            if (this._requestErrors === MAX_REQUEST_ERRORS) {
-                logger.error(`Fail to load candles ${MAX_REQUEST_ERRORS} times, exit.`);
+            if (this._requestErrors === MAX_ERRORS) {
+                logger.error(`Fail to load candles ${MAX_ERRORS} times, exit.`);
                 process.exit(1);
             }
 
