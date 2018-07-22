@@ -18,11 +18,7 @@ class Stock {
         // TODO -
     }
 
-    async moveUp(price) {
-        // TODO -
-    }
-
-    async moveDown(price) {
+    async move(price) {
         // TODO -
     }
 

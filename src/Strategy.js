@@ -83,12 +83,12 @@ class Strategy {
 
     async _moveUp() {
         this._calcCurrentEdge();
-        await this._stock.moveUp(this._edgeGenerator.edgeMinValue());
+        await this._stock.move(this._edgeGenerator.edgeMinValue());
     }
 
     async _moveDown() {
         this._calcCurrentEdge();
-        await this._stock.moveDown(this._edgeGenerator.edgeMaxValue());
+        await this._stock.move(this._edgeGenerator.edgeMaxValue());
     }
 
     _calcCurrentEdge() {
