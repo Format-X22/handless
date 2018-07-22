@@ -2,7 +2,6 @@ const fs = require('fs');
 const request = require('request-promise-native');
 const moment = require('moment');
 const sleep = require('then-sleep');
-const Candles = require('./Candles');
 
 const URL = 'https://www.bitmex.com/api/udf/history';
 const MAX_TICKS_MUL = 10000 * 60;
@@ -16,7 +15,6 @@ class Loader {
         this._to = this._nextChunk();
         this._stop = Date.now();
         this._resultHash = {};
-        this._candles = new Candles();
 
         await this._cycle();
     }

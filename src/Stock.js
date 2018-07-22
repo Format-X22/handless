@@ -18,7 +18,15 @@ class Stock {
         // TODO -
     }
 
-    async moveOrder(id, price, amount) {
+    async moveUp(price) {
+        // TODO -
+    }
+
+    async moveDown(price) {
+        // TODO -
+    }
+
+    async isFlip() {
         // TODO -
     }
 }

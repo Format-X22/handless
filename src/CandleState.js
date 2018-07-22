@@ -6,13 +6,26 @@ const logger = core.Logger;
 
 const MAX_ERRORS = 750;
 const RETRY_TIME = 5000;
+const LAST_MINUTES = 90;
 
-class Candles {
+class CandleState {
     constructor() {
         this._requestErrors = 0;
     }
 
-    async getCandles() {
+    async sync() {
+        // TODO -
+    }
+
+    getLastMaxPrice() {
+        // TODO -
+    }
+
+    getLastMinPrice() {
+        // TODO -
+    }
+
+    async _getCandles() {
         let response;
         let result;
 
@@ -35,7 +48,7 @@ class Candles {
                 process.exit(1);
             }
 
-            return await this.getCandles();
+            return await this._getCandles();
         }
 
         return result;
@@ -52,17 +65,23 @@ class Candles {
     }
 
     _makeCandlesRequestConfig() {
+        const now = moment();
+
         return {
             uri: 'https://www.bitmex.com/api/udf/history',
             qs: {
                 symbol: 'XBTUSD',
-                from: +moment().subtract(90, 'minutes') / 1000,
-                to: +moment() / 1000,
+                from: this._seconds(now.subtract(LAST_MINUTES, 'minutes')),
+                to: this._seconds(now),
                 resolution: 1,
             },
             json: true,
         };
     }
+
+    _seconds(ms) {
+        return +ms / 100;
+    }
 }
 
-module.exports = Candles;
+module.exports = CandleState;

@@ -1,17 +1,7 @@
-class SimStock {
-    constructor(publicKey, privateKey) {
-        this._requestErrors = 0;
-        this._publicKey = publicKey;
-        this._privateKey = privateKey;
-    }
+const Stock = require('./Stock');
 
-    async makeOrder(type, price, amount) {
-        // TODO -
-    }
-
-    async moveOrder(id, price, amount) {
-        // TODO -
-    }
+class SimStock extends Stock {
+    // TODO -
 }
 
 module.exports = SimStock;
