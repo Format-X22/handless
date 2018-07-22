@@ -51,6 +51,8 @@ class CandleState {
             return await this._getCandles();
         }
 
+        this._requestErrors = 0;
+
         return result;
     }
 
