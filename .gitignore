@@ -1,4 +1,4 @@
 .idea
 node_modules
-/src/simulator/data.json
+src/simData.json
 keys.txt
