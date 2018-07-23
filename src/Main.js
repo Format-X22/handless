@@ -13,6 +13,8 @@ class Main {
             HL_PUBLIC: publicKey,
             HL_PRIVATE: privateKey,
             HL_MODE: mode,
+            HL_START: start,
+            HL_STEP: step,
             HL_INDENT: indent,
         } = process.env;
 
@@ -22,7 +24,11 @@ class Main {
             stock = new Stock(publicKey, privateKey);
         }
 
-        const strategy = new Strategy(new EdgeGenerator(indent), new CandleState(), stock);
+        const strategy = new Strategy(
+            new EdgeGenerator(start, step, indent),
+            new CandleState(),
+            stock
+        );
 
         // TODO options
         await strategy.run({});
